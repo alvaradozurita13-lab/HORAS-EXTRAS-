@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Autorizacion de horas extras - CR 60126</title>
+    <link rel="stylesheet" href="src/styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="brand-block">
+        <span class="brand-mark" aria-hidden="true">HE</span>
+        <div>
+          <p class="eyebrow">Formulario interno</p>
+          <h1>Autorizacion de horas extras - CR 60126</h1>
+        </div>
+      </div>
+      <div class="connection-card" id="connectionStatus">
+        <strong>Listo para operar localmente</strong>
+        <span>Conexion SharePoint preparada para la siguiente fase</span>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="form-shell" aria-labelledby="formTitle">
+        <div class="phase-strip" aria-label="Estado del proyecto">
+          <div class="phase active">
+            <span>1</span>
+            <p>Formulario completo</p>
+          </div>
+          <div class="phase ready">
+            <span>2</span>
+            <p>Plantilla Word mapeada</p>
+          </div>
+          <div class="phase">
+            <span>3</span>
+            <p>Conexion SharePoint</p>
+          </div>
+        </div>
+
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Solicitud</p>
+            <h2 id="formTitle">Datos para autorizacion</h2>
+          </div>
+          <button class="icon-button" type="button" id="resetButton" title="Limpiar formulario" aria-label="Limpiar formulario">
+            Limpiar
+          </button>
+        </div>
+
+        <form id="overtimeForm" novalidate>
+          <section class="form-section" aria-labelledby="generalTitle">
+            <h3 id="generalTitle">1. Datos generales</h3>
+            <label class="field">
+              <span>1. Apellidos y nombres - codigo *</span>
+              <select name="employee" required></select>
+            </label>
+
+            <label class="field">
+              <span>2. Supervisor *</span>
+              <select name="coordinator" required></select>
+            </label>
+
+            <div class="grid three">
+              <label class="field">
+                <span>3. Dia del trabajo *</span>
+                <input name="workDate" type="date" required>
+              </label>
+              <label class="field">
+                <span>4. Hora inicial *</span>
+                <input name="startTime" type="time" required>
+              </label>
+              <label class="field">
+                <span>5. Hora final *</span>
+                <input name="endTime" type="time" required>
+              </label>
+            </div>
+
+            <label class="field">
+              <span>6. Numero de horas extra *</span>
+              <input name="expectedHours" type="number" min="0.01" max="24" step="any" required placeholder="Ej. 2.5">
+            </label>
+            <div class="computed-note" id="hoursNote">Completa hora inicial y final para validar la duracion.</div>
+          </section>
+
+          <section class="form-section" aria-labelledby="destinationTitle">
+            <h3 id="destinationTitle">2. Destino y area</h3>
+            <label class="field">
+              <span>7. Horas extras realizadas para: *</span>
+              <select name="performedFor" required></select>
+            </label>
+
+            <label class="field conditional" id="cr60126ModeBlock" hidden>
+              <span>Detalle CR 60126 *</span>
+              <select name="cr60126Mode"></select>
+            </label>
+
+            <label class="field conditional" id="dmimtBlock" hidden>
+              <span><span data-question-number="dmimt">8</span>. Maniobras *</span>
+              <select name="dmimtArea"></select>
+            </label>
+            <label class="field conditional" id="dmimtOtherBlock" hidden>
+              <span>Otra maniobra *</span>
+              <input name="dmimtOther" placeholder="Especificar maniobra">
+            </label>
+            
+            <label class="field conditional" id="ldsBlock" hidden>
+              <span><span data-question-number="lds">9</span>. Areas de LDS *</span>
+              <select name="ldsArea"></select>
+            </label>
+            
+            <div class="grid two">
+              <label class="field">
+                <span><span data-question-number="location">10</span>. Alimentador *</span>
+                <input name="location" required placeholder="Ej. U20">
+              </label>
+              <label class="field">
+                <span><span data-question-number="workType">11</span>. Tipo de trabajo *</span>
+                <select name="workType" required></select>
+              </label>
+              </div>
+            <label class="field conditional" id="workTypeOtherBlock" hidden>
+              <span>Otro tipo de trabajo *</span>
+              <input name="workTypeOther" placeholder="Especificar tipo de trabajo">
+            </label>
+          </section>
+
+          <section class="form-section" aria-labelledby="reasonTitle">
+            <h3 id="reasonTitle">3. Modalidad de las horas extras</h3>
+
+            <fieldset class="choice-group compact">
+              <legend><span data-question-number="payment">12</span>. Modalidad de reconocimiento *</legend>
+              <label><input type="radio" name="paymentMode" value="Pago" required> Pago</label>
+              <label><input type="radio" name="paymentMode" value="Compensacion"> Compensacion</label>
+            </fieldset>
+          </section>
+
+          <section class="form-section" aria-labelledby="signatureTitle">
+            <h3 id="signatureTitle">4. Firmas</h3>
+            <fieldset class="signature-uploader">
+              <legend><span data-question-number="workerSignature">13</span>. Firma del trabajador (generada automaticamente)</legend>
+              <label class="upload-target" for="workerSignature" hidden>
+                <input id="workerSignature" name="workerSignature" type="file" accept="image/png,image/jpeg,image/webp">
+                <span>
+                  <strong>Cargar firma</strong>
+                  <small>Imagen PNG, JPG o WEBP. Limite recomendado: 10 MB.</small>
+                </span>
+              </label>
+              <div class="signature-preview" id="workerSignaturePreview">Selecciona un trabajador para generar la firma.</div>
+            </fieldset>
+
+            <fieldset class="signature-uploader coordinator-space">
+              <legend><span data-question-number="coordinatorSignature">14</span>. Firma del supervisor (generada automaticamente)</legend>
+              <label class="upload-target" for="coordinatorSignature" hidden>
+                <input id="coordinatorSignature" name="coordinatorSignature" type="file" accept="image/png,image/jpeg,image/webp">
+                <span>
+                  <strong>Cargar firma de supervisor</strong>
+                  <small>Opcional en esta fase. Se puede exigir al activar aprobaciones.</small>
+                </span>
+              </label>
+              <div class="signature-preview" id="coordinatorSignaturePreview">Selecciona un supervisor para generar la firma.</div>
+            </fieldset>
+          </section>
+
+          <div class="actions">
+            <button class="secondary" type="button" id="downloadJsonButton">Descargar paquete JSON</button>
+            <button class="secondary" type="button" id="downloadHtmlButton">Descargar documento HTML</button>
+            <button class="secondary" type="button" id="printButton">Imprimir / guardar PDF</button>
+            <button class="primary" type="submit">Preparar registro</button>
+          </div>
+          <p class="form-message" id="formMessage" role="status"></p>
+        </form>
+      </section>
+
+      <aside class="document-shell" aria-labelledby="documentTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Plantilla vinculada</p>
+            <h2 id="documentTitle">Previsualizacion del documento</h2>
+          </div>
+          <span class="doc-state" id="documentState">Borrador</span>
+        </div>
+
+        <article class="paper" id="documentPreview">
+          <header class="paper-header">
+            <div>
+              <p>Formato de autorizacion de horas extras</p>
+              <h3>CR 60126</h3>
+              <span>Fecha de generacion: <strong id="docGeneratedAt">Pendiente</strong></span>
+            </div>
+            <strong id="documentCode">HE-000000</strong>
+          </header>
+
+          <section class="paper-section">
+            <h4>1. Datos generales</h4>
+            <dl class="paper-grid">
+              <div class="wide"><dt>Apellidos y nombres - codigo</dt><dd id="docEmployee">Pendiente</dd></div>
+              <div><dt>Supervisor</dt><dd id="docCoordinador">Pendiente</dd></div>
+              <div><dt>Dia del trabajo</dt><dd id="docDate">Pendiente</dd></div>
+              <div><dt>Hora inicial</dt><dd id="docStart">Pendiente</dd></div>
+              <div><dt>Hora final</dt><dd id="docEnd">Pendiente</dd></div>
+              <div><dt>Numero de horas extra</dt><dd id="docExpected">Pendiente</dd></div>
+            </dl>
+          </section>
+
+          <section class="paper-section">
+            <h4>2. Destino y area</h4>
+            <dl class="paper-grid">
+              <div class="wide"><dt>Horas extras realizadas para</dt><dd id="docPerformedFor">Pendiente</dd></div>
+              <div><dt>Detalle CR 60126</dt><dd id="docCr60126Mode">No aplica</dd></div>
+              <div><dt>Maniobras</dt><dd id="docDmimt">No aplica</dd></div>
+              <div><dt>Areas de LDS</dt><dd id="docLds">No aplica</dd></div>
+              <div><dt>Alimentador</dt><dd id="docLocation">Pendiente</dd></div>
+              <div><dt>Tipo de trabajo</dt><dd id="docWorkType">Pendiente</dd></div>
+            </dl>
+          </section>
+
+          <section class="paper-section">
+            <h4>3. Modalidad de las horas extras</h4>
+            <dl class="paper-grid">
+              <div><dt>Modalidad de reconocimiento</dt><dd id="docPayment">Pendiente</dd></div>
+            </dl>
+          </section>
+
+          <section class="paper-section">
+            <h4>4. Firmas</h4>
+            <div class="signatures">
+              <div>
+                <div class="signature-line" id="workerSignatureSlot"><span>Firma del trabajador</span></div>
+                <p id="workerSignatureName">Apellidos y nombres</p>
+              </div>
+              <div>
+                <div class="signature-line locked" id="coordinatorSignatureSlot"><span>Firma del supervisor</span></div>
+                <p id="coordinatorSignatureName">Supervisor</p>
+              </div>
+            </div>
+          </section>
+        </article>
+
+        <section class="integration-card">
+          <p class="eyebrow">Paquete tecnico</p>
+          <h3>Campos listos para SharePoint y Power Automate</h3>
+          <p>El registro genera `sharePointFields` para la lista y `contentControlValues` con los tags de la plantilla Word.</p>
+          <div class="tag-list" id="tagList"></div>
+        </section>
+      </aside>
+    </main>
+
+    <section class="records-shell" aria-labelledby="recordsTitle">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Repositorio local temporal</p>
+          <h2 id="recordsTitle">Registros preparados</h2>
+        </div>
+        <button class="icon-button" type="button" id="clearRecordsButton">Vaciar historial</button>
+      </div>
+      <div class="records-list" id="recordsList"></div>
+    </section>
+
+    <script src="src/catalogs.js"></script>
+    <script src="src/sharepoint-adapter.js"></script>
+    <script src="src/app.js"></script>
+  </body>
+</html>

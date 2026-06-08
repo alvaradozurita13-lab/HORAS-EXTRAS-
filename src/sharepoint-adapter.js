@@ -1,6 +1,6 @@
 (function () {
   // === URL DE TU POWER AUTOMATE (Mantiene la conexión directa) ===
-  const URL_POWER_AUTOMATE = "https://default1c0051dd45964b1a9849d060735057.69.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/a7c6ed1ace0a48ab8661f3569fcb0b39/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=LhQoPK2FimkzlYEui44nhZoWKAflZV7ilTYPgf9W75Y";
+  const URL_POWER_AUTOMATE = "https://default1c0051dd45964b1a9849d060735057.69.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/bb7a340aa791403f9902088ac7e1844a/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=hkQ0Zp-6GnP9dwjqf7U8wRUg1TP4JHJR7HOWD5RwP_s";
 
   const listFieldNames = {
     Title: "Title",
@@ -49,7 +49,7 @@
       estado: record.coordinatorSignature ? "Firmado por supervisor" : "Pendiente de supervisor",
       
       // SOLUCIÓN AL ERROR STRING/URI: Enviamos una URL válida para que la columna tipo Link de SharePoint no falle.
-      documentoHtml: "https://default1c0051dd45964b1a9849d060735057.69.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/a7c6ed1ace0a48ab8661f3569fcb0b39/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=LhQoPK2FimkzlYEui44nhZoWKAflZV7ilTYPgf9W75Y", 
+      documentoHtml: "https://default1c0051dd45964b1a9849d060735057.69.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/bb7a340aa791403f9902088ac7e1844a/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=hkQ0Zp-6GnP9dwjqf7U8wRUg1TP4JHJR7HOWD5RwP_s", 
       
       // === AQUÍ ESTÁ EL CAMBIO CLAVE ===
       // Enviamos el HTML puro en esta nueva propiedad para que Power Automate la tome en "Crear archivo"

@@ -1,7 +1,7 @@
 (function () {
   window.HE_CATALOGS = {
     employees: [
-      { code: "8186", name: "MUÑOS CORDOVA CARLOS", area: "CR 60126", coordinatorCode: "SUP-001" },
+      { code: "8186", name: "MUÑOZ CORDOVA CARLOS", area: "CR 60126", coordinatorCode: "SUP-001" },
       { code: "7902", name: "SALVADOR MALLQUI EVELIO", area: "CR 60126", coordinatorCode: "SUP-002" },
       { code: "8012", name: "MENDOZA CUENCA GILBER", area: "Maniobras", coordinatorCode: "SUP-003" },
       { code: "5894", name: "SANTOS GALLARDO NOE", area: "LDS", coordinatorCode: "SUP-004" },
